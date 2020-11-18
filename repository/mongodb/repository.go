@@ -65,7 +65,7 @@ func (m *mongoRepository) Find(code string) (*shortener.Redirect, error) {
 	defer cancel()
 
 	collection := m.client.Database(m.database).Collection(RedirectTable)
-	filter := bson.M{"code": code}
+	filter := bson.M{shortener.CodeField: code}
 	redirect := &shortener.Redirect{}
 
 	err := collection.FindOne(ctx, filter).Decode(redirect) // ?? почему тут &
@@ -87,12 +87,12 @@ func (m *mongoRepository) Store(redirect *shortener.Redirect) error {
 
 	collection := m.client.Database(m.database).Collection(RedirectTable)
 	newItem := bson.M{
-		"code":       redirect.Code,
-		"url":        redirect.URL,
-		"created_at": redirect.CreatedAt,
+		shortener.CodeField:      redirect.Code,
+		shortener.URLField:       redirect.URL,
+		shortener.CreatedAtField: redirect.CreatedAt,
 	}
+
 	_, err := collection.InsertOne(ctx, newItem)
-	//nolint:gofumt
 	if err != nil {
 		return errors.Wrap(err, "redirect.mongodb.Store")
 	}

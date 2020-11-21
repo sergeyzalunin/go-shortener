@@ -6,7 +6,7 @@ import (
 
 	errs "github.com/pkg/errors"
 	"github.com/ventu-io/go-shortid"
-	"gopkg.in/validator.v2"
+	validator "gopkg.in/dealancer/validate.v2"
 )
 
 var (
@@ -40,7 +40,7 @@ func (r *redirectService) Store(redirect *Redirect) error {
 	// let's validate the correctness of url by provided rules in Redirect struct
 	if err := validator.Validate(redirect); err != nil {
 		// exchange the validator error for our stub and put the path it happens
-		return errs.Wrap(ErrRedirectInvalid, "service.Redirect.Store")
+		return errs.Wrap(ErrRedirectInvalid, "service.Redirect.Store.Validate")
 	}
 
 	redirect.Code = shortid.MustGenerate()

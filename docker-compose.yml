@@ -1,0 +1,51 @@
+version: "3.3"
+services:
+  redis_db:
+    image: "redis:alpine"
+    command: redis-server 
+    ports:
+      - 6379:6379
+    networks:
+      node_net:
+        ipv4_address: 172.28.1.4
+  web:
+    image: "shortener:1.0"
+    command: /shortener/go-shortener
+    ports:
+      - 8080:8080
+    environment:
+      - SERVERPORT=8080
+      - URLDB=mongo # set 'redis' or 'mongo' here
+
+      # redis env variables. set URLDB=redis
+      - REDISURL=redis://redis_db:6379 
+      - REDISTIMEOUT=10 
+
+      # mongo env variables. set URLDB=mongo
+      - MONGOURL=mongodb://root:example@172.28.1.6:27017
+      - MONGODB=redirection
+      - MONGOTIMEOUT=10
+    depends_on:
+      - redis_db
+    networks:
+      node_net:
+        ipv4_address: 172.28.1.5
+  mongo:
+    image: mongo:3.6-xenial
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - 27017:27017
+    networks:
+      node_net:
+        ipv4_address: 172.28.1.6
+
+# networking for the Redis container
+networks:
+  node_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16    

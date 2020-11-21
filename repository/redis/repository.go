@@ -71,7 +71,7 @@ func (r *redisRepository) Find(code string) (*shortener.Redirect, error) {
 	}
 
 	if len(data) == 0 {
-		return nil, errors.Wrap(shortener.ErrRedirectNotFound, "repository.redis.Find")
+		return nil, errors.Wrap(shortener.ErrRedirectNotFound, fmt.Sprintf("repository.redis.Find %v", len(data)))
 	}
 
 	createdAt, err := strconv.ParseInt(data[shortener.CreatedAtField], 10, 64)

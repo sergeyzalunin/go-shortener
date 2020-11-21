@@ -20,7 +20,6 @@ require (
 	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9 // indirect
 	golang.org/x/text v0.3.4 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto v0.0.0-20200526211855-cb27e3aa2013
 	google.golang.org/protobuf v1.25.0 // indirect
-	gopkg.in/validator.v2 v2.0.0-20200605151824-2b28d334fa05
+	gopkg.in/dealancer/validate.v2 v2.1.0
 )

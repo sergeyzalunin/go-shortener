@@ -7,9 +7,9 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/pkg/errors"
-	js "github.com/sergeyzalunin/go-shortener/serializer/json"
-	ms "github.com/sergeyzalunin/go-shortener/serializer/msgpack"
-	"github.com/sergeyzalunin/go-shortener/shortener"
+	js "github.com/sergeyzalunin/go-shortener/internal/serializer/json"
+	ms "github.com/sergeyzalunin/go-shortener/internal/serializer/msgpack"
+	"github.com/sergeyzalunin/go-shortener/internal/shortener"
 	"go.uber.org/zap"
 )
 

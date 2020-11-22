@@ -1,0 +1,26 @@
+version: '3'
+
+tasks:
+  dc-build-and-up:
+    deps: [dc-down]
+    cmds:
+      - task: make-container
+      - task: dc-up
+
+  dc-up:
+    cmds:
+      - docker-compose up --remove-orphans
+
+  dc-down:
+    cmds:
+      - docker-compose down
+
+  make-container:
+    cmds:
+      - task: build-app
+      - docker build --tag shortener:1.0 .
+
+  build-app:
+    cmds:
+      - mkdir -p bin
+      - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o 'bin/go-shortener' ./cmd

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/pkg/errors"
-	"github.com/sergeyzalunin/go-shortener/shortener"
+	"github.com/sergeyzalunin/go-shortener/internal/shortener"
 )
 
 type Redirect struct{}

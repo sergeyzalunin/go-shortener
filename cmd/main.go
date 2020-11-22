@@ -11,10 +11,10 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/pkg/errors"
-	h "github.com/sergeyzalunin/go-shortener/api"
-	mr "github.com/sergeyzalunin/go-shortener/repository/mongodb"
-	rr "github.com/sergeyzalunin/go-shortener/repository/redis"
-	"github.com/sergeyzalunin/go-shortener/shortener"
+	h "github.com/sergeyzalunin/go-shortener/internal/api"
+	mr "github.com/sergeyzalunin/go-shortener/internal/repository/mongodb"
+	rr "github.com/sergeyzalunin/go-shortener/internal/repository/redis"
+	"github.com/sergeyzalunin/go-shortener/internal/shortener"
 	"go.uber.org/zap"
 )
 
@@ -74,7 +74,7 @@ func main() {
 
 	go func() {
 		c := make(chan os.Signal, 1)
-		signal.Notify(c, syscall.SIGINT, syscall.SIGTERM)
+		signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 		val := <-c
 		errs <- errors.New(val.String())
 	}()
@@ -87,37 +87,41 @@ func httpPort() string {
 	if port == "" {
 		port = "8080"
 	}
+
 	return fmt.Sprintf(":%s", port)
 }
 
 func chooseRepo(log *zap.Logger) shortener.RedirectRepository {
 	switch os.Getenv(URLDB) {
 	case "redis":
-		repo := getRedisRepository(log)
-		return repo
+		return getRedisRepository(log)
 	case "mongo":
-		repo := getMongoRepository(log)
-		return repo
+		return getMongoRepository(log)
 	}
+
 	return nil
 }
 
 func getRedisRepository(log *zap.Logger) shortener.RedirectRepository {
 	redisURL := os.Getenv(REDISURL)
+
 	redisTimeout, err := strconv.Atoi(os.Getenv(REDISTIMEOUT))
 	if err != nil {
 		log.Fatal(err.Error(), zap.Error(err))
 	}
+
 	repo, err := rr.NewRedisRepository(redisURL, redisTimeout)
 	if err != nil {
 		log.Fatal(err.Error(), zap.Error(err))
 	}
+
 	return repo
 }
 
 func getMongoRepository(log *zap.Logger) shortener.RedirectRepository {
 	mongoURL := os.Getenv(MONGOURL)
 	mongoDB := os.Getenv(MONGODB)
+
 	mongoTimeout, err := strconv.Atoi(os.Getenv(MONGOTIMEOUT))
 	if err != nil {
 		log.Fatal(err.Error(), zap.Error(err))

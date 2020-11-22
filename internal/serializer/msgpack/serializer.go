@@ -2,7 +2,7 @@ package msgpack
 
 import (
 	"github.com/pkg/errors"
-	"github.com/sergeyzalunin/go-shortener/shortener"
+	"github.com/sergeyzalunin/go-shortener/internal/shortener"
 	"github.com/vmihailenco/msgpack"
 )
 

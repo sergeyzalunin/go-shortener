@@ -8,7 +8,7 @@ import (
 
 	"github.com/go-redis/redis/v8"
 	"github.com/pkg/errors"
-	"github.com/sergeyzalunin/go-shortener/shortener"
+	"github.com/sergeyzalunin/go-shortener/internal/shortener"
 )
 
 // redisRepository is an another implementation of repository pattern.

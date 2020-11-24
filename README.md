@@ -1,4 +1,4 @@
-## GO-Shortener
+# GO-Shortener
 
 This project is a playground to check golang features and other techniques.
 
